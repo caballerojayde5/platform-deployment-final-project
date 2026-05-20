@@ -1,0 +1,77 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: project-app
+
+    volumes:
+      - .:/var/www
+
+    ports:
+      - "8000:80"
+
+    environment:
+      APP_ENV: prod
+      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}?serverVersion=8.0.32&charset=utf8mb4"
+
+    depends_on:
+      - db
+
+    networks:
+      - platform-network
+
+
+  db:
+    image: mysql:8.0
+
+    container_name: project-db
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - platform-db-data:/var/lib/mysql
+
+    networks:
+      - platform-network
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+
+    container_name: project-phpmyadmin
+
+    restart: always
+
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - db
+
+    networks:
+      - platform-network
+
+
+volumes:
+  platform-db-data:
+
+
+networks:
+  platform-network:
