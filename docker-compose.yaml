@@ -13,8 +13,8 @@ services:
       APP_ENV: prod
       DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}?serverVersion=8.0.32&charset=utf8mb4"
     depends_on:
-      db:                                  # ← change from simple list to map
-        condition: service_healthy         # ← wait until MySQL is actually ready
+      db:                                 
+        condition: service_healthy         
     networks:
       - platform-network
 
@@ -31,7 +31,7 @@ services:
       - "3306:3306"
     volumes:
       - platform-db-data:/var/lib/mysql
-    healthcheck:                                                      # ← add this
+    healthcheck:                                                     
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 5s
       timeout: 5s
@@ -40,7 +40,6 @@ services:
     networks:
       - platform-network
 
-  # ... phpmyadmin unchanged
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
