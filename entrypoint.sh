@@ -5,6 +5,15 @@ echo "Starting Symfony container..."
 echo "PORT is: $PORT"
 
 php bin/console cache:clear --env=prod
+
+# Wait for MySQL to be ready
+echo "Waiting for database connection..."
+until php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; do
+  echo "Database not ready, retrying in 3 seconds..."
+  sleep 3
+done
+echo "Database is ready!"
+
 php bin/console doctrine:migrations:migrate --no-interaction
 
 # Use sed instead of envsubst to avoid wiping nginx $variables
