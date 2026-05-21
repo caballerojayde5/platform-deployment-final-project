@@ -6,6 +6,8 @@ echo "PORT is: $PORT"
 
 php bin/console cache:clear --env=prod
 
+echo "DATABASE_URL is: $DATABASE_URL"
+
 # Fix permissions AFTER cache:clear creates the directories
 chown -R www-data:www-data /var/www/var
 chmod -R 775 /var/www/var
