@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /var/www
 COPY . .
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 RUN composer install --no-dev --optimize-autoloader
 
 RUN chmod -R 777 var
