@@ -20,7 +20,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-RUN chmod -R 777 var
+RUN mkdir -p var && chmod -R 777 var
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY nginx-main.conf /etc/nginx/nginx.conf
