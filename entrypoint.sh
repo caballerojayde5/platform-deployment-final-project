@@ -4,13 +4,13 @@ set -e
 echo "Starting Symfony container..."
 echo "PORT is: $PORT"
 
-# Fix permissions
+php bin/console cache:clear --env=prod
+
+# Fix permissions AFTER cache:clear creates the directories
 chown -R www-data:www-data /var/www/var
 chmod -R 775 /var/www/var
 
-php bin/console cache:clear --env=prod
-
-# Wait for MySQL to be ready
+# Wait for MySQL to be read
 echo "Waiting for database connection..."
 until php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; do
   echo "Database not ready, retrying in 3 seconds..."
