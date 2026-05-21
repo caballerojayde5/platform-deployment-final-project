@@ -4,6 +4,10 @@ set -e
 echo "Starting Symfony container..."
 echo "PORT is: $PORT"
 
+# Fix permissions
+chown -R www-data:www-data /var/www/var
+chmod -R 775 /var/www/var
+
 php bin/console cache:clear --env=prod
 
 # Wait for MySQL to be ready
