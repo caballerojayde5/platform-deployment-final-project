@@ -12,6 +12,8 @@ echo "DATABASE_URL is: $DATABASE_URL"
 chown -R www-data:www-data /var/www/var
 chmod -R 775 /var/www/var
 
+php bin/console importmap:install
+
 # Wait for MySQL to be read
 echo "Waiting for database connection..."
 until php bin/console doctrine:query:sql "SELECT 1" > /dev/null 2>&1; do
