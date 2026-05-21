@@ -28,5 +28,9 @@ COPY nginx-main.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+RUN sed -i 's|listen = /run/php/php8.3-fpm.sock|listen = 127.0.0.1:9000|g' /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i 's|listen = 9000|listen = 127.0.0.1:9000|g' /usr/local/etc/php-fpm.d/www.conf
+COPY php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
+
 EXPOSE 80
 CMD ["/entrypoint.sh"]
